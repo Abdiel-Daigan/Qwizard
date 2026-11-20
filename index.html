@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0618">
 <title>QuizQuest 🎮 — Build & Battle Your Brain</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -224,11 +225,113 @@ body.shake{animation:screenShake .4s}
 .res-actions .btn{flex:1}
 
 /* ---------- toast ---------- */
-#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,22px);opacity:0;pointer-events:none;
+#toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));transform:translate(-50%,22px);opacity:0;pointer-events:none;
   background:linear-gradient(135deg,#ff3cac,#a855f7);padding:13px 24px;border-radius:99px;font-weight:600;
   transition:.3s cubic-bezier(.2,1.3,.5,1);z-index:300;box-shadow:0 10px 34px rgba(168,85,247,.55);
   max-width:90vw;text-align:center;font-size:.92rem}
 #toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- settings ---------- */
+.home-top{display:flex;justify-content:flex-end;margin-bottom:-10px}
+.set-card{background:rgba(255,255,255,.055);border:1px solid var(--stroke);border-radius:20px;padding:4px 16px}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.set-row:last-child{border-bottom:none}
+.set-label{flex:1;min-width:0}
+.set-label strong{display:block;font-size:.98rem;font-weight:600;line-height:1.3}
+.set-label span{display:block;font-size:.78rem;opacity:.55;margin-top:2px}
+.set-label b{color:#fbbf24;font-weight:700}
+.set-row.is-off .set-label{opacity:.45}
+.switch{position:relative;width:54px;height:32px;flex:0 0 auto;padding:0;border-radius:99px;cursor:pointer;
+  border:1px solid var(--stroke);background:rgba(255,255,255,.1);transition:background .2s,border-color .2s}
+.switch span{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.45);transition:transform .2s}
+.switch[aria-checked="true"]{background:linear-gradient(135deg,#ff3cac,#a855f7);border-color:transparent}
+.switch[aria-checked="true"] span{transform:translateX(22px)}
+.range{-webkit-appearance:none;appearance:none;flex:1 1 100%;height:8px;border-radius:99px;outline:none;
+  background:rgba(255,255,255,.16);margin:4px 0 0;cursor:pointer}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border:none;border-radius:50%;
+  background:linear-gradient(135deg,#ff3cac,#a855f7);box-shadow:0 2px 10px rgba(255,60,172,.5);cursor:pointer}
+.range::-moz-range-thumb{width:26px;height:26px;border:none;border-radius:50%;
+  background:linear-gradient(135deg,#ff3cac,#a855f7);box-shadow:0 2px 10px rgba(255,60,172,.5);cursor:pointer}
+.range:disabled{opacity:.4;cursor:not-allowed}
+
+/* ---------- mobile & touch ---------- */
+body{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}
+button,.btn,.icon-btn,.btn-mini,.btn-play,.rm-opt,.pick,.answer,.emoji-btn,.q-del,.add-opt{
+  touch-action:manipulation;-webkit-user-select:none;user-select:none}
+
+/* touch devices have no hover — keep them out of hover states */
+@media(hover:none){
+  .btn:hover{filter:none}
+  .quiz-card:hover{transform:none;border-color:var(--stroke)}
+  .icon-btn:hover,.btn-mini:hover,.emoji-btn:hover,.rm-opt:hover:not(:disabled),
+  .add-opt:hover:not(:disabled){background:rgba(255,255,255,.06);border-color:var(--stroke);color:#fff}
+}
+
+@media(max-width:560px){
+  #app{padding:16px calc(14px + env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left))}
+  .home-head{padding:14px 0 18px}
+  .tagline{font-size:.92rem}
+
+  /* iOS/Safari zooms the page when a focused field is under 16px */
+  .title-input,.q-input,.opt-input,.add-opt,.icon-btn{font-size:16px}
+
+  /* quiz cards: action buttons get their own row so titles have room */
+  .quiz-card{flex-wrap:wrap;gap:10px;padding:12px;align-items:flex-start}
+  .quiz-emoji{width:44px;height:44px;font-size:1.5rem;border-radius:13px}
+  .quiz-info{flex:1 1 0;min-width:0;align-self:center}
+  .quiz-info h3{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:1rem;line-height:1.3}
+  .quiz-btns{width:100%;justify-content:flex-end;gap:10px;padding-top:10px;border-top:1px solid var(--stroke)}
+  .btn-play,.btn-mini{width:44px;height:44px}
+
+  /* builder */
+  .builder-head h2{font-size:1.1rem}
+  .q-card{padding:13px;border-radius:18px}
+  .opt-row{gap:7px}
+  .pick,.rm-opt{width:40px;height:40px}
+  .q-del{padding:10px 12px;font-size:.85rem}
+  .add-opt{padding:13px}
+  .builder-actions{bottom:calc(8px + env(safe-area-inset-bottom));padding:10px;gap:8px}
+  .builder-actions .btn{padding:15px 8px;font-size:.9rem}
+  .emoji-row{gap:7px}
+  .emoji-btn{width:44px;height:44px}
+
+  /* play */
+  .play-top{gap:8px;flex-wrap:wrap}
+  .score-pill,.streak-badge{padding:8px 13px;font-size:.88rem}
+  .question-card{padding:20px 15px;border-radius:20px;margin-top:12px}
+  #question-text{font-size:clamp(1.1rem,5.2vw,1.45rem)}
+  .answers{gap:9px;margin-top:15px}
+  .answer{padding:14px 15px;font-size:.98rem}
+  .points-pop{font-size:1.9rem}
+
+  /* results */
+  .results-card{padding:26px 16px;margin-top:22px;border-radius:22px}
+  .result-emoji{font-size:3rem}
+  .res-score{font-size:2.9rem}
+  .res-stats{gap:8px;margin:20px 0}
+  .stat{padding:12px 14px;min-width:0;flex:1 1 0}
+  .stat span{font-size:1.2rem}
+  .res-actions{flex-direction:column}
+  .res-actions .btn{padding:15px}
+
+  #drop-overlay .drop-inner{padding:34px 26px;font-size:1.05rem;margin:0 16px}
+}
+
+@media(max-width:360px){
+  .logo{font-size:clamp(1.9rem,11vw,2.6rem)}
+  .btn.big{padding:16px;font-size:1.02rem}
+  .quiz-info p{font-size:.72rem}
+}
+
+/* short landscape phones */
+@media(max-height:460px) and (orientation:landscape){
+  .home-head{padding:10px 0 12px}
+  .logo{font-size:2rem}
+  .question-card{padding:16px 18px}
+  #question-text{font-size:1.05rem}
+}
 </style>
 </head>
 <body>
@@ -244,6 +347,9 @@ body.shake{animation:screenShake .4s}
 
   <!-- ================= HOME ================= -->
   <section id="screen-home" class="screen active">
+    <div class="home-top">
+      <button class="icon-btn" id="btn-settings" title="Settings" aria-label="Settings">⚙️</button>
+    </div>
     <div class="home-head">
       <h1 class="logo">QUIZ<span class="grad">QUEST</span></h1>
       <p class="tagline">Build quizzes. Battle your brain. 🔥</p>
@@ -293,7 +399,7 @@ body.shake{animation:screenShake .4s}
       <div class="score-pill">⭐ <span id="score-val">0</span></div>
     </div>
 
-    <div class="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
+    <div class="timer-track" id="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
 
     <div class="question-card" id="question-card">
       <div class="q-count" id="q-count">Question 1 of 5</div>
@@ -325,6 +431,55 @@ body.shake{animation:screenShake .4s}
     </div>
   </section>
 
+  <!-- ================= SETTINGS ================= -->
+  <section id="screen-settings" class="screen">
+    <div class="builder-head">
+      <button class="icon-btn" id="btn-settings-back" title="Back" aria-label="Back">←</button>
+      <h2>Settings</h2>
+    </div>
+
+    <div class="set-card">
+      <div class="set-row">
+        <div class="set-label"><strong>Timer</strong><span>Countdown on every question</span></div>
+        <button class="switch" id="set-timer" role="switch" aria-checked="true" aria-label="Timer"><span></span></button>
+      </div>
+      <div class="set-row" id="row-seconds">
+        <div class="set-label"><strong>Seconds per question</strong><span><b id="sec-val">15</b> seconds</span></div>
+        <input class="range" type="range" id="set-seconds" min="5" max="60" step="5" value="15" aria-label="Seconds per question">
+      </div>
+    </div>
+
+    <h2 class="section-title">Game</h2>
+    <div class="set-card">
+      <div class="set-row">
+        <div class="set-label"><strong>Questions per round</strong><span id="limit-val">All</span></div>
+        <input class="range" type="range" id="set-limit" min="0" max="50" step="5" value="0" aria-label="Questions per round">
+      </div>
+      <div class="set-row">
+        <div class="set-label"><strong>Shuffle questions</strong><span>Random order every run</span></div>
+        <button class="switch" id="set-shuffle-q" role="switch" aria-checked="true" aria-label="Shuffle questions"><span></span></button>
+      </div>
+      <div class="set-row">
+        <div class="set-label"><strong>Shuffle answers</strong><span>Mix the options every run</span></div>
+        <button class="switch" id="set-shuffle-a" role="switch" aria-checked="true" aria-label="Shuffle answers"><span></span></button>
+      </div>
+    </div>
+
+    <h2 class="section-title">Feedback</h2>
+    <div class="set-card">
+      <div class="set-row">
+        <div class="set-label"><strong>Sound effects</strong><span>Bleeps for right and wrong</span></div>
+        <button class="switch" id="set-sound" role="switch" aria-checked="true" aria-label="Sound effects"><span></span></button>
+      </div>
+      <div class="set-row">
+        <div class="set-label"><strong>Confetti</strong><span>Celebrate good scores</span></div>
+        <button class="switch" id="set-confetti" role="switch" aria-checked="true" aria-label="Confetti"><span></span></button>
+      </div>
+    </div>
+
+    <button class="btn btn-ghost" id="btn-settings-reset" style="width:100%;margin-top:18px">↺ Reset to defaults</button>
+  </section>
+
 </main>
 
 <div id="drop-overlay">
@@ -347,7 +502,6 @@ const LETTERS = ['A','B','C','D','E','F','G','H','I','J'];
 const keyLabel = i => LETTERS[i] || String(i + 1);
 const PALETTE = ['#f43f5e','#3b82f6','#f59e0b','#22c55e','#a855f7','#06b6d4'];
 const EMOJIS = ['🎯','🌍','🧠','🚀','🎮','🍕','🐙','⚡','🎨','🔬','🏆','🦄'];
-const QUESTION_TIME = 15; // seconds per question
 
 const esc = s => String(s).replace(/[&<>"']/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -397,6 +551,37 @@ function seedQuizzes(){
 }
 
 quizzes = loadQuizzes() || seedQuizzes();
+
+/* =========================================================
+   Settings
+   ========================================================= */
+const SETTINGS_KEY = 'quizquest.settings.v1';
+const DEFAULT_SETTINGS = {
+  timerOn: true,
+  timePerQuestion: 15,
+  sound: true,
+  confetti: true,
+  shuffleQuestions: true,
+  shuffleAnswers: true,
+  questionLimit: 0        // 0 = all questions
+};
+let SETTINGS = Object.assign({}, DEFAULT_SETTINGS);
+
+(function loadSettings(){
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (parsed && typeof parsed === 'object'){
+      for (const k in DEFAULT_SETTINGS){
+        if (k in parsed) SETTINGS[k] = parsed[k];
+      }
+    }
+  } catch(e){ /* ignore */ }
+})();
+
+function saveSettings(){
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(SETTINGS)); } catch(e){}
+}
 
 /* =========================================================
    Answer-sheet parser
@@ -493,7 +678,6 @@ function quizFromSheet(filename, text){
    Sound effects (Web Audio)
    ========================================================= */
 let actx = null;
-let muted = false;
 
 function ensureAudio(){
   if (!actx){
@@ -502,7 +686,7 @@ function ensureAudio(){
   if (actx.state === 'suspended') actx.resume();
 }
 function tone(freq, delay, dur, type = 'sine', vol = 0.08){
-  if (!actx || muted) return;
+  if (!actx || !SETTINGS.sound) return;
   const t0 = actx.currentTime + delay;
   const osc = actx.createOscillator();
   const gain = actx.createGain();
@@ -556,8 +740,11 @@ function resizeCanvas(){
 }
 resizeCanvas();
 addEventListener('resize', resizeCanvas);
+addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
+if (window.visualViewport) visualViewport.addEventListener('resize', resizeCanvas);
 
 function spawnParticles(x, y, count){
+  if (!SETTINGS.confetti) return;
   for (let i = 0; i < count; i++){
     const a = Math.random() * Math.PI * 2;
     const sp = 3 + Math.random() * 8;
@@ -680,6 +867,67 @@ $('#quiz-list').addEventListener('click', e => {
 });
 
 $('#btn-new').addEventListener('click', () => { sfx.click(); openBuilder(null); });
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+function renderSettings(){
+  $('#set-timer').setAttribute('aria-checked', SETTINGS.timerOn);
+  $('#set-sound').setAttribute('aria-checked', SETTINGS.sound);
+  $('#set-confetti').setAttribute('aria-checked', SETTINGS.confetti);
+  $('#set-shuffle-q').setAttribute('aria-checked', SETTINGS.shuffleQuestions);
+  $('#set-shuffle-a').setAttribute('aria-checked', SETTINGS.shuffleAnswers);
+  $('#set-seconds').value = SETTINGS.timePerQuestion;
+  $('#set-seconds').disabled = !SETTINGS.timerOn;
+  $('#sec-val').textContent = SETTINGS.timePerQuestion;
+  $('#set-limit').value = SETTINGS.questionLimit;
+  $('#limit-val').textContent = SETTINGS.questionLimit ? `${SETTINGS.questionLimit} question${SETTINGS.questionLimit !== 1 ? 's' : ''}` : 'All questions';
+  $('#row-seconds').classList.toggle('is-off', !SETTINGS.timerOn);
+}
+
+function toggleSetting(key, el){
+  SETTINGS[key] = !SETTINGS[key];
+  saveSettings();
+  renderSettings();
+  sfx.click();
+}
+
+$('#btn-settings').addEventListener('click', () => {
+  sfx.click();
+  renderSettings();
+  showScreen('settings');
+});
+
+$('#btn-settings-back').addEventListener('click', () => {
+  sfx.click();
+  renderHome();
+  showScreen('home');
+});
+
+[['set-timer','timerOn'], ['set-sound','sound'], ['set-confetti','confetti'],
+ ['set-shuffle-q','shuffleQuestions'], ['set-shuffle-a','shuffleAnswers']].forEach(([id, key]) => {
+  $('#' + id).addEventListener('click', e => toggleSetting(key, e.currentTarget));
+});
+
+$('#set-seconds').addEventListener('input', e => {
+  SETTINGS.timePerQuestion = Math.max(5, Math.min(60, +e.target.value || 15));
+  saveSettings();
+  $('#sec-val').textContent = SETTINGS.timePerQuestion;
+});
+
+$('#set-limit').addEventListener('input', e => {
+  SETTINGS.questionLimit = Math.max(0, Math.min(50, +e.target.value || 0));
+  saveSettings();
+  $('#limit-val').textContent = SETTINGS.questionLimit ? `${SETTINGS.questionLimit} question${SETTINGS.questionLimit !== 1 ? 's' : ''}` : 'All questions';
+});
+
+$('#btn-settings-reset').addEventListener('click', () => {
+  SETTINGS = Object.assign({}, DEFAULT_SETTINGS);
+  saveSettings();
+  renderSettings();
+  sfx.click();
+  toast('Settings reset ↺');
+});
 
 /* =========================================================
    IMPORT ANSWER SHEETS
@@ -986,9 +1234,9 @@ function startPlay(quiz){
 
   lastQuizRef = quiz;
 
-  const questions = quiz.questions.map(q => {
+  const pool = quiz.questions.map(q => {
     const order = q.options.map((_, i) => i);
-    shuffle(order);
+    if (SETTINGS.shuffleAnswers) shuffle(order);
     return {
       q: q.q,
       options: order.map(i => q.options[i]),
@@ -996,7 +1244,8 @@ function startPlay(quiz){
       picked: -1
     };
   });
-  shuffle(questions);
+  if (SETTINGS.shuffleQuestions) shuffle(pool);
+  const questions = SETTINGS.questionLimit ? pool.slice(0, SETTINGS.questionLimit) : pool;
 
   play = {
     quizId: quiz.id,
@@ -1007,7 +1256,7 @@ function startPlay(quiz){
     bestStreak: 0,
     correctCount: 0,
     locked: true,
-    timeLeft: QUESTION_TIME
+    timeLeft: SETTINGS.timePerQuestion
   };
 
   $('#score-val').textContent = '0';
@@ -1034,7 +1283,8 @@ function loadQuestion(){
 
   const q = play.questions[play.idx];
   play.locked = false;
-  play.timeLeft = QUESTION_TIME;
+  play.timeLeft = SETTINGS.timePerQuestion;
+  $('#timer-track').style.display = SETTINGS.timerOn ? '' : 'none';
 
   $('#q-count').textContent = `Question ${play.idx + 1} of ${play.questions.length}`;
   $('#question-text').textContent = q.q;
@@ -1056,8 +1306,9 @@ function loadQuestion(){
 
 function startTimer(){
   cancelAnimationFrame(rafId);
+  if (!SETTINGS.timerOn) return;
   const start = performance.now();
-  const dur = QUESTION_TIME * 1000;
+  const dur = SETTINGS.timePerQuestion * 1000;
   const fill = $('#timer-fill');
 
   function tick(now){
@@ -1104,7 +1355,7 @@ function handleAnswer(oi){
     play.bestStreak = Math.max(play.bestStreak, play.streak);
     play.correctCount++;
 
-    const timeBonus = Math.round(60 * (play.timeLeft / QUESTION_TIME));
+    const timeBonus = SETTINGS.timerOn ? Math.round(60 * (play.timeLeft / SETTINGS.timePerQuestion)) : 0;
     const mult = 1 + Math.min(play.streak - 1, 4) * 0.25;
     const pts = Math.round((100 + timeBonus) * mult);
 
